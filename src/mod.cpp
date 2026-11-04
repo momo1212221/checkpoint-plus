@@ -45,6 +45,8 @@ void load(openrac::Mod& mod) {
         const auto load_mask = static_cast<std::uint16_t>(OPENRAC_PAD_L1 | OPENRAC_PAD_R1 | OPENRAC_PAD_TRIANGLE);
         if (qol::combo_pressed(now, previous, save_mask)) request_save = true;
         if (qol::combo_pressed(now, previous, load_mask)) request_load = true;
+        if ((now & save_mask) == save_mask) qol::consume_buttons(report, save_mask);
+        if ((now & load_mask) == load_mask) qol::consume_buttons(report, load_mask);
         previous = now;
     });
 
