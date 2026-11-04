@@ -15,9 +15,13 @@ std::uint16_t previous = 0;
 bool request_save = false;
 bool request_load = false;
 bool auto_level_start = true;
+int notice_frames = 0;
 
 void notice(const std::string& s) {
-    if (g != nullptr && g->has_notice()) g->play_notice(s);
+    if (g != nullptr && g->has_notice()) {
+        g->play_notice(s);
+        notice_frames = 120;
+    }
 }
 void capture(const openrac_play_status& status) {
     if (status.phase != OPENRAC_PLAY_PLAYING) return;
@@ -67,6 +71,7 @@ void load(openrac::Mod& mod) {
                 g->savestate_load(copy.data(), copy.size());
             }
         }
+        if (notice_frames > 0 && --notice_frames == 0 && g->has_notice()) g->play_notice("");
     });
     mod.info("L1+R1+Square saves; L1+R1+Triangle restores");
 }
