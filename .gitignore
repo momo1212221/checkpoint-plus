@@ -3,3 +3,6 @@
 /.sdk/
 __pycache__/
 .DS_Store
+build-local/
+dist-local/
+build-local-*.log

@@ -15,14 +15,7 @@ std::uint16_t previous = 0;
 bool request_save = false;
 bool request_load = false;
 bool auto_level_start = true;
-int notice_frames = 0;
 
-void notice(const std::string& s) {
-    if (g != nullptr && g->has_notice()) {
-        g->play_notice(s);
-        notice_frames = 120;
-    }
-}
 void capture(const openrac_play_status& status) {
     if (status.phase != OPENRAC_PLAY_PLAYING) return;
     openrac_pose pose{}; pose.size = sizeof pose;
@@ -32,7 +25,6 @@ void capture(const openrac_play_status& status) {
     snapshot.resize(size);
     g->savestate_save(snapshot.data(), snapshot.size());
     snapshot_loads = status.loads;
-    notice("Checkpoint saved");
 }
 }
 
@@ -65,14 +57,12 @@ void load(openrac::Mod& mod) {
         if (auto_level_start && snapshot.empty() && settled == 120) capture(status);
         if (request_load) {
             request_load = false;
-            if (snapshot.empty() || snapshot_loads != status.loads) notice("No checkpoint for this level");
-            else {
+            if (!snapshot.empty() && snapshot_loads == status.loads) {
                 auto copy = snapshot;
                 g->savestate_load(copy.data(), copy.size());
             }
         }
-        if (notice_frames > 0 && --notice_frames == 0 && g->has_notice()) g->play_notice("");
     });
     mod.info("L1+R1+Square saves; L1+R1+Triangle restores");
 }
-OPENRAC_MOD_CPP("checkpoint-plus", "0.1.0", load)
+OPENRAC_MOD_CPP("checkpoint-plus", "0.2.0", load)
