@@ -1,3 +1,5 @@
+> **Status: Integrated into [Better Pause Menu / QoL Hub](https://github.com/momo1212221/better-pause-menu). This standalone repository is retained for history/reference and is not planned as a separate OpenRAC listing submission.**
+
 # Checkpoint Plus
 
 Adds safe warm quick-checkpoints for RAC1.
